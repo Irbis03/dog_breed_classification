@@ -1,5 +1,6 @@
 import os
 import subprocess
+
 import hydra
 import mlflow
 import pytorch_lightning as pl
@@ -49,9 +50,7 @@ def main(cfg: DictConfig):
 
     # Запись git commit id в MLflow
     commit_id = get_git_commit_id()
-    mlflow_logger.experiment.log_param(
-        mlflow_logger.run_id, "git_commit_id", commit_id
-    )
+    mlflow_logger.experiment.log_param(mlflow_logger.run_id, "git_commit_id", commit_id)
 
     # 5. Запуск обучения
     trainer.fit(model, datamodule=datamodule)
@@ -65,9 +64,7 @@ def main(cfg: DictConfig):
             float(v) for k, v in trainer.logged_metrics.items() if "val_loss" in k
         ],
         "train_acc": [
-            float(v)
-            for k, v in trainer.logged_metrics.items()
-            if "train_acc" in k
+            float(v) for k, v in trainer.logged_metrics.items() if "train_acc" in k
         ],
         "val_acc": [
             float(v) for k, v in trainer.logged_metrics.items() if "val_acc" in k

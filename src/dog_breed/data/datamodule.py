@@ -38,16 +38,20 @@ class DogDataModule(pl.LightningDataModule):
             random_state=42,
         )
 
-        train_transform = A.Compose([
-            A.Resize(self.img_size, self.img_size),
-            A.HorizontalFlip(p=0.5),
-            A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-        ])
+        train_transform = A.Compose(
+            [
+                A.Resize(self.img_size, self.img_size),
+                A.HorizontalFlip(p=0.5),
+                A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+            ]
+        )
 
-        val_transform = A.Compose([
-            A.Resize(self.img_size, self.img_size),
-            A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-        ])
+        val_transform = A.Compose(
+            [
+                A.Resize(self.img_size, self.img_size),
+                A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+            ]
+        )
 
         self.train_dataset = DogDataset(
             train_df.reset_index(drop=True), self.img_dir, transform=train_transform

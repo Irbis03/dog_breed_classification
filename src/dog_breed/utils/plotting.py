@@ -1,10 +1,9 @@
 import os
+
 import matplotlib.pyplot as plt
 
 
-def save_training_plots(
-    metrics_history: dict, output_dir: str = "plots"
-) -> None:
+def save_training_plots(metrics_history: dict, output_dir: str = "plots") -> None:
     os.makedirs(output_dir, exist_ok=True)
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))

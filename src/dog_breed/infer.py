@@ -1,15 +1,19 @@
 import sys
-import torch
-import cv2
+
 import albumentations as A
+import cv2
+import torch
+
 from dog_breed.models.module import DogClassifierModule
 
 
 def predict(image_path: str, model_path: str = "models/model.ckpt"):
-    transform = A.Compose([
-        A.Resize(224, 224),
-        A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-    ])
+    transform = A.Compose(
+        [
+            A.Resize(224, 224),
+            A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+        ]
+    )
 
     image = cv2.imread(image_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)

@@ -1,12 +1,13 @@
+import logging
 import os
 import subprocess
-import logging
 
 logger = logging.getLogger(__name__)
 
 
 def ensure_data_downloaded(data_dir: str = "data/raw") -> None:
-    """Проверяет наличие данных. Если данных нет, скачивает через DVC или мок-генератор."""
+    """Проверяет наличие данных.
+    Если данных нет, скачивает через DVC или мок-генератор."""
     labels_file = os.path.join(data_dir, "labels.csv")
     train_dir = os.path.join(data_dir, "train")
 
