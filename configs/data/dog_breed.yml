@@ -1,0 +1,6 @@
+csv_path: "data/raw/labels.csv"
+img_dir: "data/raw/train"
+batch_size: 32
+num_workers: 2
+val_size: 0.2
+img_size: 224

@@ -1,0 +1,11 @@
+defaults:
+  - data: dog_breed
+  - model: resnet18
+  - trainer: default
+  - _self_
+
+mlflow:
+  tracking_uri: "http://127.0.0.1:8080"
+  experiment_name: "Dog_Breed_Identification"
+
+plots_dir: "plots"
