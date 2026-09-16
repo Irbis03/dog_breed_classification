@@ -1,1 +1,30 @@
- .venv/
+# Байт-код и кэш Python
+__pycache__/
+*.py[oc]
+*.pyo
+*.class
+
+# Сборка и дистрибутивы
+build/
+dist/
+*.egg-info
+*.egg
+
+# Виртуальное окружение
+venv/
+.env
+.venv
+
+# Настройки IDE
+.idea/
+.vscode/
+
+# Системные файлы
+.DS_Store
+
+# Дополнительно
+tmp/
+*.ckpt
+mlflow.db
+mlartifacts/
+outputs/

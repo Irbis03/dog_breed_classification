@@ -1,4 +1,4 @@
-"""Dog Breed Identification MLOps Package."""
+"""Dog Breed Identification Package."""
 
 from dog_breed.data.datamodule import DogDataModule
 from dog_breed.infer import predict

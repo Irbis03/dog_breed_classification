@@ -1,0 +1,7 @@
+# Remote 1: Для датасетов
+[remote "local_data"]
+    url = data/raw
+
+# Remote 2: Для моделей
+[remote "local_models"]
+    url = models

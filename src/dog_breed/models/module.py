@@ -7,10 +7,12 @@ from torchvision.models import ResNet18_Weights, resnet18
 class DogClassifierModule(pl.LightningModule):
     def __init__(self, num_classes: int = 120, lr: float = 1e-3):
         super().__init__()
+        # Автоматически логирует параметры в MLflow / Lightning
         self.save_hyperparameters()
         self.lr = lr
 
         self.backbone = resnet18(weights=ResNet18_Weights.DEFAULT)
+        # Замена последнего полносвязного слоя под 120 классов пород собак
         in_features = self.backbone.fc.in_features
         self.backbone.fc = nn.Sequential(
             nn.Dropout(0.3), nn.Linear(in_features, num_classes)

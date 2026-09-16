@@ -1,0 +1,18 @@
+defaults:
+  - data: dog_breed
+  - model: resnet18
+  - trainer: default
+  - _self_
+
+mlflow:
+  tracking_uri: "http://127.0.0.1:8010"
+  experiment_name: "Dog_Breed_Identification_Problem"
+
+# Параметры для DVC
+dvc:
+  data_dir_path: "data/raw"
+  models_dir_path: "models"
+  data_remote_name: "local_data"
+  models_remote_name: "local_models"
+
+plots_dir: "plots"
