@@ -79,8 +79,6 @@ def main(cfg: DictConfig):
         # 5. Trainer
         trainer = pl.Trainer(
             max_epochs=cfg.trainer.max_epochs,
-            limit_train_batches=3,
-            limit_val_batches=3,
             accelerator=cfg.trainer.accelerator,
             devices=cfg.trainer.devices,
             logger=mlflow_logger,

@@ -27,7 +27,7 @@
 
 ## Моделирование
 
-### Бейзлайн
+### Baseline
 
 В качестве простого решения используется предобученная сверточная нейросеть в режиме извлечения признаков (feature extractor), поверх которой обучается классификатор.
 
@@ -50,30 +50,20 @@
 1. **Клонируйте репозиторий и перейдите в него:**
 
 ```bash
-git clone
-cd DogBreedClassification
+git clone https://github.com/Irbis03/dog_breed_classification
+cd dog_breed_classification
 
 ```
 
-2. **Создайте и активируйте виртуальное окружение:**
+2. **Установите зависимости**
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # Для Linux/macOS
-# или venv\Scripts\activate для Windows
+uv sync
 
 ```
 
-3. **Установите зависимости:**
-
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-
-```
-
-_(Или используйте менеджера зависимостей проекта, если настроен `pyproject.toml` / Poetry)._ 4. **Инициализация окружения MLflow:**
-Проект настроен на локальное сохранение метаданных в SQLite и артефактов в директорию `mlartifacts/`. Никаких дополнительных внешних подключений к S3/Google Drive не требуется.
+3. **Инициализация окружения MLflow:**
+   Проект настроен на локальное сохранение метаданных в SQLite и артефактов в директорию `mlartifacts/`. Никаких дополнительных внешних подключений к S3/Google Drive не требуется.
 
 ## Train (Обучение модели)
 
@@ -82,24 +72,41 @@ _(Или используйте менеджера зависимостей пр
 1. **Запуск полного цикла обучения:**
 
 ```bash
-python train.py
+python -m dog_breed.train
 
 ```
 
-_Скрипт автоматически инициализирует сессию в локальной базе данных `mlflow.db`, запустит обучение модели на базе PyTorch Lightning, сохранит лучшие чекпоинты (включая `tmp/checkpoints/best`) и залогирует артефакты в `mlartifacts/`._ 2. **Быстрая отладка и тестовый прогон:**
-Если вам нужно быстро проверить работоспособность пайплайна без ожидания полного обучения эпох, вы можете использовать встроенные ограничения батчей (или быстрый режим дебага):
+Скрипт автоматически инициализирует сессию в локальной базе данных `mlflow.db`, запустит обучение модели на базе PyTorch Lightning, сохранит лучшие чекпоинты (включая `tmp/checkpoints/best`) и залогирует артефакты в `mlartifacts/`.
+
+2. **Мониторинг процесса:**
+   Для визуального контроля за метриками и параметрами заложите локальный сервер MLflow UI:
 
 ```bash
-python train.py --fast_dev_run=True
+mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlartifacts --port 8010
 
 ```
 
-_(Либо ограничить количество шагов обучения через конфигурационные параметры)._ 3. **Мониторинг процесса:**
-Для визуального контроля за метриками и параметрами заложите локальный сервер MLflow UI:
+После этого откройте в браузере `[http://127.0.0.1:8010](http://127.0.0.1:8010)`.
+
+## Infer (Вывод модели)
+
+1. **Перевод в формат onnx**
 
 ```bash
-mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlartifacts --port 5000
+python -m dog_breed.export
 
 ```
 
-После этого откройте в браузере `[http://127.0.0.1:5000](http://127.0.0.1:5000)`.
+В `model_repository/dog_breed_onnx` получим два файла: `model.onnx` (вычислительный граф), `model.onnx.data` (веса)`.
+
+2. **Перевод в формат tensorRT**
+
+Вариант запуска `convert_trt.sh` через Docker с поддержкой GPU (`--gmp` / `--gpus all`):
+
+```bash
+docker run --gpus all -it --rm \
+  -v $(pwd):/workspace \
+  nvcr.io/nvidia/tensorrt:23.08-py3 \
+  bash /workspace/convert_trt.sh
+
+```

@@ -28,3 +28,4 @@ tmp/
 mlflow.db
 mlartifacts/
 outputs/
+model_repository/
